@@ -1,0 +1,137 @@
+
+UPGRADING THE READemption PIPELINE
+* Exposè/abstract
+Recent progress in the high-throughput sequencing (HTS) sector has led
+to new techniques regarding transcriptome analyis, i.e. improved RNA
+sequencing (RNA seq) or differential RNA sequencing (dRNA-seq).
+Nowadays RNA-seq allows the massive parallel sequencing of eucaryotic
+or procaryotic genomes which gave new insights and reveals further
+advantages compared to other methods [1] [2] [3] [4] [5]. dRNA-seq
+provided a better view on pathogen-host interactions as both perties'
+transcriptomes can be distinguished and analysed seperately [6]. The
+issue of both techniques is a great amount of data being generated
+which then have to be analysed. This problem can be adressed in a
+bioinformatical manner by using a pipeline for (d)RNA-seq
+analysis. Commercial available pipelines are reliable and stable
+solutions but not transparent as source codes normally are not
+directly available [7]. Consequently, it can be told what happens but
+not how or by which parameters. By creating an own pipeline this
+transperancy is given and it provides greater flexibility, i.e. by
+implementing various programs. The aim of this Master Thesis is to
+improve the existing and self-written pipeline for RNA-seq analysis
+'READemption' [8]. There are numerous elements of the pipeline which
+can specifically be improved or altered in a beneficial way. One point
+is the improvement of code efficieny subsequently increasing the
+pipeline's efficiency, stability and thus decreasing runtime of the
+whole process. Those issues can be further adressed by embedding the
+code in a wrapper, i.e. 'Luigi'. Also the workflow and the data
+handling can be made less complex by implementing a higher grade of
+automation on a code basis. The implementation of more or alternative
+programs can be beneficial in many ways. Through the usage of i.e. the
+'STAR' mapper instead of 'Segemehl' the memory footprint and overall
+speed of the process can be decreased drastically. The usage of
+i.e. 'Cutadapt' instead of 'FastX toolkit' offers more options to edit
+readfiles increasing overall flexibility and again decreases the
+amount of code. Depending on the demand, many output options are
+available, i.e. creating html files which can be displayed in a
+internet browser, making the workflow easier for unexperienced
+users. Another possibility to make the pipeline more user-friendly is
+the viziualisation element, i.e. by creating interactive tables/plots
+as output. Generally spoken does the implementation of different
+programs not only potentially decrease memory footprint and overall
+runtime, but also increases the range operations that can be performed
+on the data, including the kind of output files. Subsequently it
+improves the overall process' efficiency, flexibility and simplicity
+of data handling/analysis.
+
+
+[1] Mark Gerstein Zhong Wang and Michael Snyder. Rna-seq: a revolu-
+tionary tool for transcriptomics. Nature Reviews Genetics, 10(1):57 –
+63, 2009.
+
+[2] Arnoud H.M. Van Vliet. Next generation sequencing of microbial tran-
+scriptomes: challenges and opportunities. FEMS Microbiology Letters,
+302(1):1–7, 2010.
+
+[3] Nicole Cloonan, Qinying Xu, Geoffrey J. Faulkner, Darrin F. Taylor,
+Dave T. P. Tang, Gabriel Kolle, and Sean M. Grimmond. Rna-mate:
+a recursive mapping strategy for high-throughput rna-sequencing data.
+Bioinformatics, 25(19):2615–2616, 2009.
+
+[4] Karla D. Passalacqua, Anjana Varadarajan, Charlotte Weist, Brian D.
+Ondov, Benjamin Byrd, Timothy D. Read, and Nicholas H. Bergman.
+Strand-specific rna-seq reveals ordered patterns of sense and antisense
+transcription in bacillus anthracis. PLoS ONE, 7(8):e43350, 08 2012.
+
+[5] Jens Georg and Wolfgang R. Hess. cis-antisense rna, another level of
+gene regulation in bacteria. Microbiology and Molecular Biology Reviews,
+75(2):286–300, 2011.
+
+[6] Cynthia M Sharma and Joerg Vogel. Differential rna-seq: the approach
+behind and the biological insight gained. Current Opinion in Microbi-
+ology, 19:97 – 105, 2014.
+
+[7] https://en.wikipedia.org/wiki/List_of_RNA-Seq_bioinformatics_tools
+
+[8] Konrad U. Foerstner, Joerg Vogel, and Cynthia M. Sharma. Reademp-
+tion - a tool for the computational analysis of deep-sequencing-based
+transcriptome data. Bioinformatics, 2
+
+
+Coverting data files in one kind to another (“data-wrangling”)
+
+* Introduction
+** Unix/Shell
+** Python
+** High-throughput sequencing 
+*** Introduction on HTS
+a little of the history, from RNA-seq to dRNA-seq
+*** What happens during sequencing (adapters, split reads, single ends...)
+adapter:
+single-end reads:
+paired-end reads: 
+** Data-editing
+In order to use the raw read data for the ongoing process they need to
+be edited. First of all .sra files have to be converted to .fastq
+files (FastX toolkit) As described in [[High-throughput sequencing]] the
+reads reveal Adapters wich need to be removed. Furthermore the read
+files have to be quality trimmed. Options of quality trimming ________
+. We use Cutadapt for those options.
+** Mapping/Alignment
+(STAR) The process is divided into two distinct working steps. First
+genome indexes files of reference genome file (FASTA) and annotations
+(i think GTF files are needed) which then are used in the mapping
+process. Then the reads (in form of Fastq/fasta files) get mapped to
+the genome. As a result various output files are possible (unmapped
+reads, splice junctions, etc.).
+
+ In general a mapper needs
+to be chosen on the needs, as there is probably not a best/worse
+option. Define the needs!! We try to use STAR. Comparable obviously
+very good, can cover split alignments (exon/intron), it's faster than
+others (needs much RAM, requires 30 Gb of memory??)
+*** Bowtie2
+(acc. to forum:) will not map, when there is an insertion or deletion.
+*** Segemehl
+*** Burrows Wheeler Aligner (BWT)
+(acc. to forum) doesn't recognise splicing (exon/intron junctions)
+*** Tophat ! 
+spliced read aligner (maps reads over exon/intron junctions), uses
+bowtie as aligner
+*** HISAT2 !
+*** STAR !
+http://www.rna-seqblog.com/optimizing-rna-seq-mapping-with-star/) can
+detect exon/intron etc. also useful for other, downstream analysis. Very fast!
+*** subread !! 
+alternative to STAR maybe
+*** StrinTie !
+*** SOAP splice
+*** gsnap
+** Annotation
+
+* Material and Methods
+** Programs used
+- Ubuntu 15.04
+- SRA Toolkit
+- Cutadapt (installed manually and local which means it is not required to give a path in the script!!!, download packed file, unpack and then $ python3 setup.py install --user)
+- 
